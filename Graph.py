@@ -1,4 +1,4 @@
-from typing import Hashable, List, Set
+from typing import Hashable
 
 class Graph:
     def __init__(self, directed: bool = False) -> None:
@@ -69,7 +69,9 @@ class Graph:
                 self.adj_list[to_node].add((from_node, weight))
 
     def depth_first_search(self, start):
-        visited, stack, order = set(), [start], []
+        visited = set()
+        stack = [start]
+        order = []
         while stack:
             node = stack.pop()
             if node not in visited:
@@ -82,16 +84,20 @@ class Graph:
         return order
 
     def breadth_first_search(self, start):
-        visited, queue, order = set(), [start], []
+        visited = set()
+        queue = [start]
+        order = []
         while queue:
             node = queue.pop(0)
             if node not in visited:
                 visited.add(node)
                 order.append(node)
-                for nb in self.obtain_neighbours(node):
-                    nb = nb[0] if isinstance(nb, tuple) else nb
-                    if nb not in visited and nb not in queue:
-                        queue.append(nb)
+                for neighbour in self.obtain_neighbours(node):
+                    if isinstance(neighbour, tuple):
+                        neighbour = neighbour[0]
+                        if neighbour not in visited:
+                            queue.append(neighbour)
+
         return order
 
 
